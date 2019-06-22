@@ -21,40 +21,67 @@ declare global {
 }
 
 export interface State {
-  count: number;
+  result: number;
 }
 
 export enum MessageType {
-  INCREMENT,
-  DECREMENT
+  CALCULATE,
+  RESULT,
+  RESET
 }
 
-export interface IncrementMessage {
-  type: MessageType.INCREMENT;
+interface BMRParams {
+  gender: string;
+  height: string;
+  weight: string;
+  age: string;
 }
 
-export interface DecrementMessage {
-  type: MessageType.DECREMENT;
+export interface CalculateMessage {
+  type: MessageType.CALCULATE;
+  value: BMRParams;
 }
 
-export type Message = IncrementMessage | DecrementMessage;
+export interface ResetMessage {
+  type: MessageType.RESET;
+}
+
+export type Message = CalculateMessage | ResetMessage;
 
 export default class StateActor extends Actor<Message> {
   private ui = lookup("ui");
   private state: State = {
-    count: 0
+    result: 0
   };
 
   async onMessage(msg: Message) {
     switch (msg.type) {
-      case MessageType.INCREMENT:
-        this.state.count += 1;
-        break;
-      case MessageType.DECREMENT:
-        this.state.count -= 1;
-        if (this.state.count <= 0) {
-          this.state.count = 0;
+      case MessageType.CALCULATE:
+        // men 10 x weight (kg) + 6.25 x height (cm) – 5 x age (y) + 5
+        // women 10 x weight (kg) + 6.25 x height (cm) – 5 x age (y) – 161.
+        const {
+          weight,
+          height,
+          age,
+          gender
+        }: BMRParams = msg.value;
+        const baseFormulaResult = 10 * +weight + 6.25 * +height - 5 * +age;
+        let bmr = 0;
+        switch (gender) {
+          case "1": // male
+              bmr = baseFormulaResult + 5;
+            break;
+    
+          case "0": // female
+              bmr = baseFormulaResult - 161;
+            break;
+          default:
+            break;
         }
+        this.state.result = bmr;
+        break;
+      case MessageType.RESET:
+        this.state.result = 0;
         break;
     }
     this.ui.send({

@@ -30,27 +30,51 @@ export type Message = StateMessage;
 
 export default class UiActor extends Actor<Message> {
   private state = lookup("state");
-  private counterEl = document.getElementById("counter") as HTMLSpanElement;
-
+  private resultEl = document.getElementById("result") as HTMLSpanElement;
+  private getInputVal = () => {
+    // gender
+    const genderEl = document.getElementById("gender") as HTMLSelectElement;
+    const genderVal = genderEl.value;
+    // height
+    const heightEl = document.getElementById("height") as HTMLSelectElement;
+    const heightVal = heightEl.value;
+    // weight
+    const weightEl = document.getElementById("weight") as HTMLSelectElement;
+    const weightVal = weightEl.value;
+    // age
+    const ageEl = document.getElementById("age") as HTMLSelectElement;
+    const ageVal = ageEl.value;
+    return {
+      gender: genderVal,
+      height: heightVal,
+      weight: weightVal,
+      age: ageVal,
+    }
+  };
+  
   async init() {
-    const incrButton = document.getElementById(
-      "increment"
+    const calculateButton = document.getElementById(
+      "Calculate"
     ) as HTMLButtonElement;
-    incrButton.onclick = () =>
+    calculateButton.onclick = () =>
       this.state.send({
-        type: StateMessageType.INCREMENT
+        type: StateMessageType.CALCULATE,
+        value: this.getInputVal()
       });
 
-    const decrButton = document.getElementById(
-      "decrement"
+    const resetButton = document.getElementById(
+      "Reset"
     ) as HTMLButtonElement;
-    decrButton.onclick = () =>
+    resetButton.onclick = () => {
+      const form = document.getElementById("bmrForm") as HTMLFormElement;
+      form.reset();
       this.state.send({
-        type: StateMessageType.DECREMENT
+        type: StateMessageType.RESET
       });
+    }
   }
 
   async onMessage(msg: Message) {
-    this.counterEl.textContent = `${msg.state.count}`;
+    this.resultEl.textContent = `${msg.state.result}`;
   }
 }

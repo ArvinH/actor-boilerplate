@@ -1,7 +1,30 @@
 <!doctype html>
 <meta name="viewport" content="width=device-width, minimum-scale=1">
-
-<label>Counter: <span id="counter">?</span></label>
-<button id="increment">Increment</button><button id="decrement">Decrement</button>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<body>
+  <div style="width:80%;margin:20px;">
+    <label>BMR Calculator</label>
+    <form id="bmrForm">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="gender">Options</label>
+        </div>
+        <select class="custom-select" id="gender">
+          <option selected>Gender...</option>
+          <option value="1">Male</option>
+          <option value="2">Female</option>
+        </select>
+      </div>
+      <input type="text" id="height" class="form-control" placeholder="Height" aria-label="Height" aria-describedby="basic-addon1">
+      <input type="text" id="weight" class="form-control" placeholder="Weight" aria-label="Weight" aria-describedby="basic-addon1">
+      <input type="text" id="age" class="form-control" placeholder="Age" aria-label="Age" aria-describedby="basic-addon1">
+      <div style="margin:20px;">
+        <button id="Calculate" class="btn btn-primary" type="button">Calculate</button>
+        <button id="Reset" class="btn btn-primary" type="submit">Reset</button>
+      </div>
+      <label>Your BMR is: <span id="result">?</span></label>
+    </form>
+  </div>
+</body>
 
 <script src="bootstrap.js" defer></script>
