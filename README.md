@@ -1,3 +1,9 @@
+# Actor Demo - BMR Calculator
+
+![demo](./bmr-actor-demo.png)
+
+---
+
 # Actor Boilerplate
 
 A starting point for web apps based on the actor model.
